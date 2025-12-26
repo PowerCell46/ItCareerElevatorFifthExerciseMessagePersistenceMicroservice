@@ -23,5 +23,5 @@ public class Message extends CommonEntity {
     private String receiverId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String message;
+    private String content;
 }

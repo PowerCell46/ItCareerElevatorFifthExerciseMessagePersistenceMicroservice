@@ -15,5 +15,5 @@ public class PersistMessageDTO {
 
     private String receiverId;
 
-    private String message;
+    private String content;
 }

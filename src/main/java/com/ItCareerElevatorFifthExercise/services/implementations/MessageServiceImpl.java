@@ -20,7 +20,7 @@ public class MessageServiceImpl implements MessageService {
         Message message = new Message(
                 persistMessage.getSenderId(),
                 persistMessage.getReceiverId(),
-                persistMessage.getMessage()
+                persistMessage.getContent()
         );
 
         save(message);
