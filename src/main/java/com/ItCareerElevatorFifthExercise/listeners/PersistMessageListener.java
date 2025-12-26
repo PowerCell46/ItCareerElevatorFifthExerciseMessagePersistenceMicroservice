@@ -1,6 +1,7 @@
 package com.ItCareerElevatorFifthExercise.listeners;
 
 import com.ItCareerElevatorFifthExercise.DTOs.PersistMessageDTO;
+import com.ItCareerElevatorFifthExercise.services.interfaces.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PersistMessageListener {
 
-//    private final MessageService messageService;
+    private final MessageService messageService;
 
     @KafkaListener(
             topics = "${spring.kafka.topic.persist-message:persistMessage}",
@@ -27,6 +28,6 @@ public class PersistMessageListener {
         }
 
         log.info("Received data from Kafka: {}.", persistMessage);
-//        messageService.persistMessage(persistMessage);
+        messageService.persistMessage(persistMessage);
     }
 }

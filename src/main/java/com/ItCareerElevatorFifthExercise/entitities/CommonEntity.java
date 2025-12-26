@@ -2,27 +2,40 @@ package com.ItCareerElevatorFifthExercise.entitities;
 
 import com.ItCareerElevatorFifthExercise.entitities.listeners.CommonEntityListener;
 import com.ItCareerElevatorFifthExercise.exceptions.InvalidSnowflakeIdException;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.ByteBuffer;
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 @Slf4j
 @Getter
 @Setter
-@NoArgsConstructor
 @MappedSuperclass
 @EntityListeners(CommonEntityListener.class)
 public class CommonEntity {
 
     @Id
     private Long id;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt; // activeFrom
+
+    @Column(nullable = false)
+    private LocalDateTime lastModifiedAt;
+
+    public CommonEntity() {
+        this.createdAt = LocalDateTime.now();
+        this.lastModifiedAt = LocalDateTime.now();
+    }
 
     private static final Base64.Encoder ENCODER = Base64.getUrlEncoder().withoutPadding();
     private static final Base64.Decoder DECODER = Base64.getUrlDecoder();
@@ -58,5 +71,34 @@ public class CommonEntity {
         }
 
         return ByteBuffer.wrap(bytes).getLong();
+    }
+
+    @PrePersist // * Called once before the entity is first saved (INSERT)
+    public void prePersist() {
+        this.lastModifiedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate // * Called every time the entity is updated (UPDATE)
+    public void preUpdate() {
+        this.lastModifiedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CommonEntity that = (CommonEntity) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
