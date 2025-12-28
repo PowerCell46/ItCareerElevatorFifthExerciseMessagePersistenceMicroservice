@@ -13,7 +13,7 @@ public class PersistMessageDTO {
 
     private String senderId;
 
-    private String receiverId;
+    private String receiverId; // ? userId or groupId
 
     private String content;
 }

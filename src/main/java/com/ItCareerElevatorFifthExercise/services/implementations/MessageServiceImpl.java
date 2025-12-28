@@ -28,7 +28,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message save(Message message) {
-        log.info("Persisting message from {} to {} to the database.", message.getSenderId(), message.getReceiverId());
+        log.info("Persisting message sent from user with id {} to to user with id {} to the database.",
+                message.getSenderId(),
+                message.getReceiverId()
+        );
 
         return messageRepository.save(message);
     }
