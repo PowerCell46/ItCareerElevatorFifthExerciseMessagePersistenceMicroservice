@@ -20,7 +20,8 @@ public class MessageServiceImpl implements MessageService {
         Message message = new Message(
                 persistMessage.getSenderId(),
                 persistMessage.getReceiverId(),
-                persistMessage.getContent()
+                persistMessage.getContent(),
+                persistMessage.getSentAt()
         );
 
         save(message);
@@ -28,7 +29,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message save(Message message) {
-        log.info("Persisting message sent from user with id {} to to user with id {} to the database.",
+        log.info("Persisting message sent from user with id {} to user with id {} to the database.",
                 message.getSenderId(),
                 message.getReceiverId()
         );

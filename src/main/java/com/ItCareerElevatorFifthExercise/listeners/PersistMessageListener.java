@@ -28,6 +28,9 @@ public class PersistMessageListener {
         }
 
         log.info("Received data from Kafka: {}.", persistMessage);
+
+        // TODO: Implement Inbox pattern here
+
         messageService.persistMessage(persistMessage);
     }
 }
