@@ -10,12 +10,12 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "messages")
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "messages")
 public class Message extends CommonEntity {
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package com.ItCareerElevatorFifthExercise.services.implementations;
 
+import com.ItCareerElevatorFifthExercise.DTOs.ConversationSummaryResponseDTO;
 import com.ItCareerElevatorFifthExercise.DTOs.PersistMessageDTO;
 import com.ItCareerElevatorFifthExercise.entitities.Message;
 import com.ItCareerElevatorFifthExercise.repositories.MessageRepository;
@@ -7,6 +8,8 @@ import com.ItCareerElevatorFifthExercise.services.interfaces.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -35,5 +38,19 @@ public class MessageServiceImpl implements MessageService {
         );
 
         return messageRepository.save(message);
+    }
+
+    @Override
+    public List<ConversationSummaryResponseDTO> getUserConversations(String userId) {
+        return messageRepository
+                .findLastMessagesPerConversation(userId)
+                .stream()
+                .map(lastMessageProjection -> new ConversationSummaryResponseDTO(
+                        lastMessageProjection.getSenderId(),
+                        lastMessageProjection.getReceiverId(),
+                        lastMessageProjection.getContent(),
+                        lastMessageProjection.getCreatedAt())
+                )
+                .toList();
     }
 }

@@ -33,7 +33,7 @@ public class KafkaConsumerConfig {
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 
         StringDeserializer keyDeserializer = new StringDeserializer();
-        JacksonJsonDeserializer<PersistMessageDTO> valueDeserializer = new JacksonJsonDeserializer<>(PersistMessageDTO.class);
+        var valueDeserializer = new JacksonJsonDeserializer<>(PersistMessageDTO.class);
         valueDeserializer.addTrustedPackages("*");
 
         return new DefaultKafkaConsumerFactory<>(
@@ -45,7 +45,7 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, PersistMessageDTO> persistMessageKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, PersistMessageDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, PersistMessageDTO>();
         factory.setConsumerFactory(persistMessageConsumerFactory());
         return factory;
     }
