@@ -45,11 +45,13 @@ public class MessageServiceImpl implements MessageService {
         return messageRepository
                 .findLastMessagesPerConversation(userId)
                 .stream()
-                .map(lastMessageProjection -> new ConversationSummaryResponseDTO(
-                        lastMessageProjection.getSenderId(),
-                        lastMessageProjection.getReceiverId(),
-                        lastMessageProjection.getContent(),
-                        lastMessageProjection.getCreatedAt())
+                .map(lastMessageProjection ->
+                        new ConversationSummaryResponseDTO(
+                                lastMessageProjection.getSenderId(),
+                                lastMessageProjection.getReceiverId(),
+                                lastMessageProjection.getContent(),
+                                lastMessageProjection.getCreatedAt()
+                        )
                 )
                 .toList();
     }

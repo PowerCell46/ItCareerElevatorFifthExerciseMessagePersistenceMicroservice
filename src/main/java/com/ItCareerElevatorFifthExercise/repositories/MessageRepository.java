@@ -13,25 +13,29 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query(value = """
-            SELECT DISTINCT ON (other_user_id)
+            -- Last message per other user for the given current user
+            SELECT DISTINCT ON (other_user_id) -- one row per other_user_id
                    m.sender_id,
                    m.receiver_id,
                    m.content,
                    m.created_at
             FROM (
+                -- Messages sent by current user (other_user_id = receiver)
                 SELECT  m.*,
                         m.receiver_id AS other_user_id
                 FROM    messages m
                 WHERE   m.sender_id = :currentUserId
 
-                UNION ALL
-
+                UNION ALL -- keep all in/out messages [web:102][web:110]
+                
+                -- Messages received by current user (other_user_id = sender)
                 SELECT  m.*,
                         m.sender_id AS other_user_id
                 FROM    messages m
                 WHERE   m.receiver_id = :currentUserId
             ) AS m
-            ORDER BY other_user_id, created_at DESC
+            -- Order so DISTINCT ON keeps the latest message per other_user_id
+            ORDER BY other_user_id, created_at DESC -- latest created_at wins in each group [web:97][web:99]
             """,
             nativeQuery = true
     )
